@@ -1,6 +1,7 @@
 import streamlit as st
 import cv2
 import numpy as np
+from streamlit_webrtc import webrtc_streamer
 
 st.set_page_config(page_title="IoT Controller", layout="wide")
 
@@ -69,6 +70,7 @@ with col_camera:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame_placeholder.image(frame, use_column_width=True, output_format="JPEG")
         cap.release()
+        webrtc_streamer(key="camera")
 
     
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
