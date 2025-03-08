@@ -19,15 +19,19 @@ st.markdown(
         align-items: center;
         justify-content: center;
     }
+    .camera-container img {
+        width: 100%;
+        height: auto;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-st.title("IoT Controller - DJI Mavic Style")
+st.title("WEEDBLAZER")
 
 # Layout Setup
-col_wheel, col_camera, col_manipulator = st.columns(3)
+col_wheel, col_camera, col_manipulator = st.columns([1, 2, 1])
 
 # Wheel Control (Left)
 with col_wheel:
@@ -49,9 +53,13 @@ with col_wheel:
 # Real-Time Camera (Center)
 with col_camera:
     st.subheader("📷 Live Camera Feed")
-    camera = st.camera_input("Activate Camera")
-    if camera is not None:
-        st.image(camera, caption="Live Feed", use_column_width=True)
+    cap = cv2.VideoCapture(0)
+    ret, frame = cap.read()
+    cap.release()
+    if ret:
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        st.image(frame, caption="Live Feed", use_column_width=True, output_format="JPEG")
+    
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("🔥", key="laser_fire"):
         st.write("Laser Activated!")
