@@ -50,7 +50,7 @@ with col_wheel:
     st.markdown('</div>', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
-    row1, row2 = st.columns(2)
+     row1, row2 = st.columns(2)
     with row1:
         if st.button("⬅️", key="wheel_left"):
             st.write("Turning Left")
