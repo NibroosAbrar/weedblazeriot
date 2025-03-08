@@ -7,35 +7,55 @@ st.set_page_config(page_title="IoT Controller", layout="wide")
 st.markdown(
     """
     <style>
+    .main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
     .stButton>button {
         border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        font-size: 24px;
         width: 80px;
         height: 80px;
         font-size: 30px;
+        margin: 10px;
     }
     .button-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: 20px;
+        margin: 10px 0;
     }
     .control-panel {
         display: flex;
         flex-direction: column;
         align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+        margin: 10px 0;
+    }
+    .section-title {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    div.element-container {
+        text-align: center;
+    }
+    div.stButton {
+        text-align: center;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
+st.markdown('<div class="main">', unsafe_allow_html=True)
 st.title("IoT Controller for Mobile")
 
-# Layout Setup
-col_left, col_center, col_right = st.columns([1.5, 3, 1.5])
+# Layout Setup - Adjusted ratios for better proportions
+col_left, col_center, col_right = st.columns([1.2, 2, 1.2])
 
 # Wheel Control (Left)
 with col_left:
@@ -111,3 +131,4 @@ void loop() {
     // Placeholder for Bluetooth communication with Streamlit
 }
 """
+st.markdown('</div>', unsafe_allow_html=True)
