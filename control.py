@@ -53,7 +53,7 @@ with col_wheel:
 # Real-Time Camera (Center)
 with col_camera:
     st.subheader("📷 Live Camera Feed")
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     ret, frame = cap.read()
     cap.release()
     if ret:
