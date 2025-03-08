@@ -51,14 +51,25 @@ with col_wheel:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Real-Time Camera (Center)
+# Real-Time Camera (Center)
 with col_camera:
     st.subheader("📷 Live Camera Feed")
-    cap = cv2.VideoCapture(1)
-    ret, frame = cap.read()
-    cap.release()
-    if ret:
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        st.image(frame, caption="Live Feed", use_column_width=True, output_format="JPEG")
+
+    # Gunakan 0 jika hanya ada satu kamera, atau ubah jika perlu
+    cap = cv2.VideoCapture(0)  
+    if not cap.isOpened():
+        st.error("Camera not found. Try using another index (0, 1, -1).")
+    else:
+        frame_placeholder = st.empty()
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                st.error("Failed to capture image.")
+                break
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame_placeholder.image(frame, use_column_width=True, output_format="JPEG")
+        cap.release()
+
     
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("🔥", key="laser_fire"):
