@@ -1,6 +1,7 @@
 import streamlit as st
 import cv2
 import numpy as np
+from streamlit_webrtc import webrtc_streamer
 
 st.set_page_config(page_title="IoT Controller", layout="wide")
 
@@ -53,12 +54,7 @@ with col_wheel:
 # Real-Time Camera (Center)
 with col_camera:
     st.subheader("📷 Live Camera Feed")
-    cap = cv2.VideoCapture(0)
-    ret, frame = cap.read()
-    cap.release()
-    if ret:
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        st.image(frame, caption="Live Feed", use_column_width=True, output_format="JPEG")
+    webrtc_streamer(key="camera")
     
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("🔥", key="laser_fire"):
