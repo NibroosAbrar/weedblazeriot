@@ -17,23 +17,14 @@ st.markdown(
         width: 80px;
         height: 80px;
         font-size: 30px;
-        margin: 10px;
+        margin: 15px;
     }
     .button-container {
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 20px;
-        margin: 10px 0;
-    }
-    .control-panel {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 20px;
-        border-radius: 15px;
-        margin: 10px 0;
+        margin: 20px 0;
     }
     .section-title {
         text-align: center;
@@ -61,7 +52,6 @@ col_left, col_center, col_right = st.columns([1.2, 2, 1.2])
 with col_left:
     st.subheader("🚗 Wheel Control")
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
-    st.markdown('<div class="control-panel">', unsafe_allow_html=True)
     if st.button("⬆️", key="wheel_up"):
         st.write("Moving Forward")
     st.markdown('</div>', unsafe_allow_html=True)
@@ -73,7 +63,7 @@ with col_left:
     with row2:
         if st.button("➡️", key="wheel_right"):
             st.write("Turning Right")
-            
+    
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("⬇️", key="wheel_down"):
         st.write("Moving Backward")
@@ -94,7 +84,6 @@ with col_center:
 with col_right:
     st.subheader("🤖 Manipulator Control")
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
-    st.markdown('<div class="control-panel">', unsafe_allow_html=True)
     if st.button("⬆️", key="manip_up"):
         st.write("Moving Up")
     st.markdown('</div>', unsafe_allow_html=True)
@@ -106,7 +95,7 @@ with col_right:
     with row4:
         if st.button("➡️", key="manip_right"):
             st.write("Moving Right")
-            
+    
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("⬇️", key="manip_down"):
         st.write("Moving Down")
