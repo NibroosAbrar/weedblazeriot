@@ -13,16 +13,11 @@ st.markdown(
         height: 80px;
         font-size: 30px;
     }
-    .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-    }
-    .control-panel {
+    .button-container, .control-panel {
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
     }
     </style>
     """,
@@ -32,10 +27,10 @@ st.markdown(
 st.title("IoT Controller - DJI Mavic Style")
 
 # Layout Setup
-col_left, col_center, col_right = st.columns([1.5, 3, 1.5])
+col_wheel, col_camera, col_manipulator = st.columns(3)
 
 # Wheel Control (Left)
-with col_left:
+with col_wheel:
     st.subheader("🚗 Wheel Control")
     st.markdown('<div class="control-panel">', unsafe_allow_html=True)
     if st.button("⬆️", key="wheel_up"):
@@ -52,7 +47,7 @@ with col_left:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Real-Time Camera (Center)
-with col_center:
+with col_camera:
     st.subheader("📷 Live Camera Feed")
     camera = st.camera_input("Activate Camera")
     if camera is not None:
@@ -63,7 +58,7 @@ with col_center:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Cartesian Manipulator Control (Right)
-with col_right:
+with col_manipulator:
     st.subheader("🤖 Manipulator Control")
     st.markdown('<div class="control-panel">', unsafe_allow_html=True)
     if st.button("⬆️", key="manip_up"):
