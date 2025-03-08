@@ -41,7 +41,7 @@ col_left, col_center, col_right = st.columns([1.5, 3, 1.5])
  
 # Wheel Control (Left)
 with col_wheel:
-with col_left:
+ with col_left:
     st.subheader("🚗 Wheel Control")
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     st.markdown('<div class="control-panel">', unsafe_allow_html=True)
