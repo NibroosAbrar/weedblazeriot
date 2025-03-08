@@ -56,7 +56,7 @@ with col_camera:
     st.subheader("📷 Live Camera Feed")
 
     # Gunakan 0 jika hanya ada satu kamera, atau ubah jika perlu
-    cap = cv2.VideoCapture(0)  
+    cap = cv2.VideoCapture(-1)  
     if not cap.isOpened():
         st.error("Camera not found. Try using another index (0, 1, -1).")
     else:
