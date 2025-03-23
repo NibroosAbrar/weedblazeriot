@@ -3,4 +3,4 @@ opencv-python
 numpy
 streamlit-webrtc
 opencv-python-headless
-streamlit bleak
+bleak
