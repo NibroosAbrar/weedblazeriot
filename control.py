@@ -7,7 +7,7 @@ SERVICE_UUID = "19B10010-E8F2-537E-4F6C-D104768A1214"
 CHARACTERISTIC_UUID = "19B10011-E8F2-537E-4F6C-D104768A1214"
 
 # Alamat perangkat Arduino (ubah sesuai dengan perangkat)
-DEVICE_ADDRESS = "42:48:3C:66:0C:7B"
+DEVICE_ADDRESS = "53:1c:b7:90:b8:55"
 
 # Fungsi untuk mengecek koneksi ke Arduino
 async def check_connection():
