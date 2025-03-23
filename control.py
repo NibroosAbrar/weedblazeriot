@@ -1,24 +1,37 @@
 import streamlit as st
 import asyncio
 from bleak import BleakClient
-import cv2
-import numpy as np
 
 # UUID yang sama dengan di Arduino
 SERVICE_UUID = "19B10010-E8F2-537E-4F6C-D104768A1214"
 CHARACTERISTIC_UUID = "19B10011-E8F2-537E-4F6C-D104768A1214"
 
 # Alamat perangkat Arduino (ubah sesuai dengan perangkat)
-DEVICE_ADDRESS = "42:48:3c:66:0c:7b"  # Ganti dengan alamat MAC Arduino Nano 33 BLE
+DEVICE_ADDRESS = "42:48:3C:66:0C:7B"
 
-# Fungsi untuk mengirim data ke Arduino
+# Fungsi untuk mengecek koneksi ke Arduino
+async def check_connection():
+    try:
+        async with BleakClient(DEVICE_ADDRESS) as client:
+            return await client.is_connected()
+    except Exception as e:
+        return False
+
+# Fungsi untuk mengirim perintah ke Arduino
 async def send_command(command):
-    async with BleakClient(DEVICE_ADDRESS) as client:
-        if await client.is_connected():
-            await client.write_gatt_char(CHARACTERISTIC_UUID, command.encode())
-            st.success(f"Perintah '{command}' terkirim!")
-        else:
-            st.error("Gagal terhubung ke Arduino!")
+    try:
+        async with BleakClient(DEVICE_ADDRESS) as client:
+            if await client.is_connected():
+                await client.write_gatt_char(CHARACTERISTIC_UUID, command.encode())
+                st.success(f"Perintah '{command}' terkirim!")
+            else:
+                st.error("Gagal terhubung ke Arduino!")
+    except Exception as e:
+        st.error(f"Error: {str(e)}")
+
+# Mengecek koneksi BLE saat halaman dimuat
+if "is_connected" not in st.session_state:
+    st.session_state.is_connected = asyncio.run(check_connection())
 
 st.set_page_config(page_title="IoT Controller", layout="wide")
 
@@ -44,16 +57,20 @@ st.markdown(
         gap: 20px;
         margin: 20px 0;
     }
-    .section-title {
+    .indicator {
+        font-size: 18px;
+        font-weight: bold;
         text-align: center;
-        width: 100%;
-        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 10px;
     }
-    div.element-container {
-        text-align: center;
+    .connected {
+        background-color: #4CAF50;
+        color: white;
     }
-    div.stButton {
-        text-align: center;
+    .disconnected {
+        background-color: #FF5733;
+        color: white;
     }
     </style>
     """,
@@ -63,7 +80,12 @@ st.markdown(
 st.markdown('<div class="main">', unsafe_allow_html=True)
 st.title("IoT Controller for Mobile")
 
-# Layout Setup - Adjusted ratios for better proportions
+# Indikator Koneksi Bluetooth
+status_text = "🔗 Terhubung ke Arduino" if st.session_state.is_connected else "❌ Tidak Terhubung"
+status_class = "connected" if st.session_state.is_connected else "disconnected"
+st.markdown(f'<div class="indicator {status_class}">{status_text}</div>', unsafe_allow_html=True)
+
+# Layout Setup
 col_left, col_center, col_right = st.columns([1.2, 2, 1.2])
 
 # Wheel Control (Left)
@@ -71,20 +93,20 @@ with col_left:
     st.subheader("🚗 Wheel Control")
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("⬆️", key="wheel_up"):
-        st.write("Moving Forward")
+        asyncio.run(send_command("FORWARD"))
     st.markdown('</div>', unsafe_allow_html=True)
-    
+
     row1, row2 = st.columns(2)
     with row1:
         if st.button("⬅️", key="wheel_left"):
-            st.write("Turning Left")
+            asyncio.run(send_command("LEFT"))
     with row2:
         if st.button("➡️", key="wheel_right"):
-            st.write("Turning Right")
-    
+            asyncio.run(send_command("RIGHT"))
+
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("⬇️", key="wheel_down"):
-        st.write("Moving Backward")
+        asyncio.run(send_command("BACKWARD"))
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Real-Time Camera (Center)
@@ -95,7 +117,7 @@ with col_center:
         st.image(camera, caption="Live Feed", use_column_width=True)
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("🔥", key="laser_fire"):
-        st.write("Laser Activated!")
+        asyncio.run(send_command("LASER_ON"))
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Cartesian Manipulator Control (Right)
@@ -103,22 +125,20 @@ with col_right:
     st.subheader("🤖 Manipulator Control")
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("⬆️", key="manip_up"):
-        st.write("Moving Up")
+        asyncio.run(send_command("MANIP_UP"))
     st.markdown('</div>', unsafe_allow_html=True)
-    
+
     row3, row4 = st.columns(2)
     with row3:
         if st.button("⬅️", key="manip_left"):
-            st.write("Moving Left")
+            asyncio.run(send_command("MANIP_LEFT"))
     with row4:
         if st.button("➡️", key="manip_right"):
-            st.write("Moving Right")
-    
+            asyncio.run(send_command("MANIP_RIGHT"))
+
     st.markdown('<div class="button-container">', unsafe_allow_html=True)
     if st.button("⬇️", key="manip_down"):
-        st.write("Moving Down")
+        asyncio.run(send_command("MANIP_DOWN"))
     st.markdown('</div>', unsafe_allow_html=True)
-
-st.info("For now, Arduino communication is disabled.")
 
 st.markdown('</div>', unsafe_allow_html=True)
