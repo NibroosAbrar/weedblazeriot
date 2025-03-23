@@ -1,6 +1,24 @@
 import streamlit as st
+import asyncio
+from bleak import BleakClient
 import cv2
 import numpy as np
+
+# UUID yang sama dengan di Arduino
+SERVICE_UUID = "19B10010-E8F2-537E-4F6C-D104768A1214"
+CHARACTERISTIC_UUID = "19B10011-E8F2-537E-4F6C-D104768A1214"
+
+# Alamat perangkat Arduino (ubah sesuai dengan perangkat)
+DEVICE_ADDRESS = "42:48:3c:66:0c:7b"  # Ganti dengan alamat MAC Arduino Nano 33 BLE
+
+# Fungsi untuk mengirim data ke Arduino
+async def send_command(command):
+    async with BleakClient(DEVICE_ADDRESS) as client:
+        if await client.is_connected():
+            await client.write_gatt_char(CHARACTERISTIC_UUID, command.encode())
+            st.success(f"Perintah '{command}' terkirim!")
+        else:
+            st.error("Gagal terhubung ke Arduino!")
 
 st.set_page_config(page_title="IoT Controller", layout="wide")
 
